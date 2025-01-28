@@ -1,6 +1,7 @@
 export default {
   moduleName: 'itenant',
   //Entities
-  entityNames: {    
+  entityNames: {  
+	  wizard: 'wizard'
   }
 }
