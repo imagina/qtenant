@@ -18,15 +18,19 @@ export default function controller (props: any, emit: any)
     {
       name: 'wellcome',
       left: {
-        class: 'col-12 col-md-6',
-        component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/wellcome'))
-      }
-    },
-    {
-      name: 'wellcome2',
-      right: {
         class: 'col-12',
         component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/wellcome'))
+      }      
+    },
+    {
+      name: 'terms',
+      left: {
+        class: 'col-6',
+        component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/terms/left'))
+      },
+      right: {
+        class: 'col-6',
+        component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/terms/right'))
       }
     }
   ]  
@@ -64,12 +68,26 @@ export default function controller (props: any, emit: any)
       const step = methods.getNextStep()
       if(step) methods.setStep(step.name)
     },
-    getNextStep(){
-      const currentIndex = steps.findIndex(obj => obj.name === state.currentStep.name);
-      
+    previousStep(){
+      const step = methods.getPreviousStep()
+      if(step) methods.setStep(step.name)
+    },
+    getCurrentIndex(){
+      return steps.findIndex(obj => obj.name === state.currentStep.name) || 0;      
+    },
+    getPreviousStep(){
+      const currentIndex = methods.getCurrentIndex()
       // Return the next object, if it exists; otherwise, return null
-      if (currentIndex !== -1 && currentIndex < steps.length - 1) {
-        console.log(steps[currentIndex + 1])
+      if (currentIndex !== -1) {
+        return steps[currentIndex - 1];
+      }
+      return false
+    },
+
+    getNextStep(){
+      const currentIndex = methods.getCurrentIndex()      
+      // Return the next object, if it exists; otherwise, return null
+      if (currentIndex !== -1 && currentIndex < steps.length - 1) {        
         return steps[currentIndex + 1];
       }
       return false
