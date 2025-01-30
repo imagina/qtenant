@@ -6,8 +6,8 @@
     <!--left component-->
     <div id="left" 
       v-if="currentStep?.left" 
-      :class="currentStep?.left?.class"
-      class="row items-baseline"      
+      class="row"
+      :class="currentStep.right ? 'col-12 col-md-6' : 'col-12'"
     >
       <div 
         id="logo"
@@ -23,13 +23,54 @@
         @previousStep="previousStep()"
         @nextStep="nextStep()" 
       />
+      
+      
+      <div
+        id="stepper"
+        :class="isMobile ? 'tw-w-full' : 'tw-w-1/2'"        
+      >
+        <q-linear-progress          
+          size="sm"
+          color="primary"
+          :track-color="progress ? 'blue-grey-1' : 'white'"
+          :value="progress"
+          :animation-speed="800"
+        />
+        <div class="row justify-between">
+          <div class="col-4 q-pa-md">
+            <q-btn
+              rounded
+              no-caps
+              :disabled="false"
+              unelevated
+              color="blue-grey"
+              icon="fa-light fa-arrow-left"
+              @click="previousStep()"
+              :label="isMobile ? '' : $tr('isite.cms.label.previous')"
+              v-if="progress"
+            />
+          </div>
+          <div class="col-4 q-pa-md text-right">
+            <q-btn
+              rounded
+              no-caps
+              :disabled="false"
+              icon-right="fa-light fa-arrow-right tw-ml-0 sm:tw-ml-2"
+              @click="nextStep()"
+              unelevated
+              color="green"
+              :label="isMobile ? '' : $tr('isite.cms.label.continue')"
+              v-if="progress"
+            />
+          </div>
+        </div>        
+      </div>
     </div>
     <!--right component-->
     <div id="right" 
-      v-if="currentStep?.right" 
-      :class="currentStep?.right?.class"
-      class="flex items-center"
-    >    
+      v-if="currentStep?.right"       
+      class="row col-6 gt-sm items-center"
+    >
       <component 
         :is="rightComponent"
         @previousStep="previousStep()"
@@ -54,6 +95,11 @@ export default defineComponent({
   },  
   setup(props, {emit}) {
     return controller(props, emit)
+  }, 
+  computed: {
+    isMobile(){
+      return this.$q.screen.lt.md
+    }
   }
 })
 
@@ -65,6 +111,12 @@ export default defineComponent({
   #logo {
     width: 100%; 
     height: 80px;
+  }
+
+  #stepper {
+    bottom: 0;
+    left: 0;
+    position: fixed;
   }
 
   #left: {

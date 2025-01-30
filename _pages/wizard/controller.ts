@@ -18,18 +18,33 @@ export default function controller (props: any, emit: any)
     {
       name: 'wellcome',
       left: {
-        class: 'col-12',
         component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/wellcome'))
-      }      
+      }
     },
     {
       name: 'terms',
       left: {
-        class: 'col-6',
         component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/terms/left'))
       },
       right: {
-        class: 'col-6',
+        component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/terms/right'))
+      }
+    },
+    {
+      name: 'terms2',
+      left: {
+        component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/terms/left'))
+      },
+      right: {
+        component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/terms/right'))
+      }
+    }, 
+    {
+      name: 'terms3',
+      left: {
+        component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/terms/left'))
+      },
+      right: {
         component: defineAsyncComponent(() => import('modules/qtenant/_components/wizard/steps/terms/right'))
       }
     }
@@ -49,6 +64,10 @@ export default function controller (props: any, emit: any)
   // Computed
   const computeds = {
     // key: computed(() => {})    
+    progress: computed(() => {
+      const progressPercent = 1 / (steps.length - 1);      
+      return progressPercent * methods.getCurrentIndex();
+    })
     
   }
 

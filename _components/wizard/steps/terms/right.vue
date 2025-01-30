@@ -3,6 +3,10 @@
 		<div class="col-12 col-sm-10 col-md-11">
 			<p>
 				Acepta nuestras Condiciones de uso para disfrutar de todas las bondades que tenemos para ti
+				<q-btn
+					label="next"
+					@click="$emit('nextStep')"
+				/>
 			</p>
 		</div>
 	</div>    

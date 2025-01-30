@@ -5,7 +5,7 @@
           <h2 class="text-primary">{{step.title}}</h2>
         </div>
         
-        <div v-html="step.description">
+        <div v-html="step.description" class="text-center">
         </div>
         <q-img 
           v-if="step?.mediaFiles"   
