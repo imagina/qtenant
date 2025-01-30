@@ -17,12 +17,14 @@
           <img :src="logo" class="tw-h-20 tw-w-auto"/>
         </a>        
       </div>
-        
-      <component 
-        :is="leftComponent"
-        @previousStep="previousStep()"
-        @nextStep="nextStep()" 
-      />
+      <Transition name="fade" mode="out-in">
+        <component
+          class="left-component"
+          :is="leftComponent"
+          @previousStep="previousStep()"
+          @nextStep="nextStep()" 
+        />
+      </Transition>
       
       
       <div
@@ -34,7 +36,6 @@
           color="primary"
           :track-color="progress ? 'blue-grey-1' : 'white'"
           :value="progress"
-          :animation-speed="800"
         />
         <div class="row justify-between">
           <div class="col-4 q-pa-md">
@@ -67,11 +68,12 @@
       </div>
     </div>
     <!--right component-->
-    <div id="right" 
+    <div id="right"
       v-if="currentStep?.right"       
       class="row col-6 gt-sm items-center"
     >
       <component 
+        class="right-component"
         :is="rightComponent"
         @previousStep="previousStep()"
         @nextStep="nextStep()"            
@@ -82,7 +84,7 @@
 </template>
 <script>
 
-import {defineComponent, }  from 'vue'
+import {defineComponent, Transition }  from 'vue'
 import controller from 'modules/qtenant/_pages/wizard/controller'
 
 export default defineComponent({  
@@ -106,6 +108,15 @@ export default defineComponent({
 </script>
 <style lang="scss">  
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 
 #tenant-wizard {
   #logo {
@@ -119,9 +130,9 @@ export default defineComponent({
     position: fixed;
   }
 
-  #left: {
-    -webkit-animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-    animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  .right-component {
+    -webkit-animation: fade-in-left 0.6s ease both;
+    animation: fade-in-left 0.6s ease both;
   }
 
   #right {
@@ -130,18 +141,6 @@ export default defineComponent({
 }
 
 
-@-webkit-keyframes fade-in-left {
-  0% {
-    -webkit-transform: translateX(-50px);
-    transform: translateX(-50px);
-    opacity: 0;
-  }
-  100% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
 
 @keyframes fade-in-left {
   0% {

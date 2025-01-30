@@ -78,10 +78,16 @@ export default function controller (props: any, emit: any)
       if(!name) return false 
       const step = steps.find(obj => obj.name === name)
       if(step){
+        state.loading = true
         state.currentStep = step
         state.leftComponent  = step.left?.component || null
         state.rightComponent  = step.right?.component || null
-      }
+        setTimeout(() =>{
+          state.loading = false
+          }, 0)
+        }
+
+
     },
     nextStep(){
       const step = methods.getNextStep()
