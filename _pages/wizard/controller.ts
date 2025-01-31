@@ -2,7 +2,8 @@ import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance, u
 
 //import services from "modules/qsite/_components/master/dynamicList/services";
 import { store, i18n, clone, alert } from 'src/plugins/utils';
-import components from 'modules/qsite/_components/master/dynamicList/components'
+import { cache } from 'src/plugins/utils';
+
 
 export default function controller (props: any, emit: any)
 {
@@ -81,13 +82,9 @@ export default function controller (props: any, emit: any)
         state.loading = true
         state.currentStep = step
         state.leftComponent  = step.left?.component || null
-        state.rightComponent  = step.right?.component || null
-        setTimeout(() =>{
-          state.loading = false
-          }, 0)
-        }
-
-
+        state.rightComponent  = step.right?.component || null        
+        state.loading = false
+      }
     },
     nextStep(){
       const step = methods.getNextStep()

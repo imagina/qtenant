@@ -16,16 +16,13 @@
         <a :href="urlBase">
           <img :src="logo" class="tw-h-20 tw-w-auto"/>
         </a>        
-      </div>
-      <Transition name="fade" mode="out-in">
+      </div>      
         <component
           class="left-component"
           :is="leftComponent"
           @previousStep="previousStep()"
           @nextStep="nextStep()" 
         />
-      </Transition>
-      
       
       <div
         id="stepper"
@@ -108,16 +105,6 @@ export default defineComponent({
 </script>
 <style lang="scss">  
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
 #tenant-wizard {
   #logo {
     width: 100%; 
@@ -131,8 +118,8 @@ export default defineComponent({
   }
 
   .right-component {
-    -webkit-animation: fade-in-left 0.6s ease both;
-    animation: fade-in-left 0.6s ease both;
+    -webkit-animation: fade-in-left 0.6s ease;
+    animation: fade-in-left 0.6s ease;
   }
 
   #right {
