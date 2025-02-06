@@ -1,7 +1,5 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance, useSlots, markRaw, shallowRef, defineAsyncComponent} from "vue";
 
-//import services from "modules/qsite/_components/master/dynamicList/services";
-import { store, i18n, clone, alert } from 'src/plugins/utils';
 import { cache } from 'src/plugins/utils';
 
 
@@ -57,7 +55,7 @@ export default function controller (props: any, emit: any)
     leftComponent: shallowRef(),
     rightComponent: shallowRef(),
     currentStep: {},
-    
+    systemName: 'qtenant.wizard',    
     loading: false,    
   })
   
@@ -74,11 +72,24 @@ export default function controller (props: any, emit: any)
 
   // Methods
   const methods = {
-    // methodKey: () => {}    
+    // methodKey: () => {}
+    async setCache(key, data){
+      //const cacheData = await cache.get.item(state.systemName);
+      //const cacheData = {}
+      //cacheData[key] = data
+      //console.log(cacheData)
+      await cache.set(state.systemName, data);
+      console.warn('setCache =>', key, cacheData)
+    }, 
+    getCache(key){},
+    removeCache(){
+      //this.$cache.remove('org-wizard-data');
+    }, 
     setStep(name){
       if(!name) return false 
       const step = steps.find(obj => obj.name === name)
       if(step){
+        methods.setCache('step', step)
         state.loading = true
         state.currentStep = step
         state.leftComponent  = step.left?.component || null
