@@ -1,7 +1,5 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance, useSlots, markRaw, shallowRef, defineAsyncComponent} from "vue";
-
 import { cache } from 'src/plugins/utils';
-
 
 export default function controller (props: any, emit: any)
 {
@@ -74,14 +72,16 @@ export default function controller (props: any, emit: any)
   const methods = {
     // methodKey: () => {}
     async setCache(key, data){
-      //const cacheData = await cache.get.item(state.systemName);
-      //const cacheData = {}
-      //cacheData[key] = data
-      //console.log(cacheData)
-      await cache.set(state.systemName, data);
-      console.warn('setCache =>', key, cacheData)
+      let cacheData = await cache.get.item(state.systemName);
+      if(!cacheData) cacheData = {}
+      cacheData[key] = data
+      await cache.set(state.systemName, cacheData);
     }, 
-    getCache(key){},
+    async getCache(key){
+      const data = await cache.get.item(state.systemName)
+      if(data && data[key]) return data[key]
+      return null
+    },
     removeCache(){
       //this.$cache.remove('org-wizard-data');
     }, 
@@ -89,9 +89,9 @@ export default function controller (props: any, emit: any)
       if(!name) return false 
       const step = steps.find(obj => obj.name === name)
       if(step){
-        methods.setCache('step', step)
         state.loading = true
         state.currentStep = step
+        methods.setCache('step', step.name)
         state.leftComponent  = step.left?.component || null
         state.rightComponent  = step.right?.component || null        
         state.loading = false
@@ -130,7 +130,9 @@ export default function controller (props: any, emit: any)
     },
     async init ()
     { 
-      methods.setStep('wellcome')
+      //restore last step
+      const step = await methods.getCache('step') || steps[0].name
+      methods.setStep(step)
     }, 
   }
     
