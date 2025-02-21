@@ -1,39 +1,35 @@
 <template>
-  <div 
-    id="tenant-wizard" 
-    class="tw-h-screen overflow-auto row items-stretch"
-  >
+  <div id="tenant-wizard" class="tw-h-screen overflow-auto row items-stretch">
     <!--left component-->
-    <div id="left" 
-      v-if="currentStep?.left" 
+    <div
+      id="left"
+      v-if="currentStep?.left"
       class="row"
       :class="currentStep.right ? 'col-12 col-md-6' : 'col-12'"
     >
-      <div 
-        id="logo"
-        class="flex justify-center tw-bg-white"
-      >
+      <div id="logo" class="flex justify-center tw-bg-white">
         <a :href="urlBase">
-          <img :src="logo" class="tw-h-20 tw-w-auto"/>
-        </a>        
-      </div>      
-        <component
-          class="left-component"
-          :is="leftComponent"
-          @previousStep="previousStep()"
-          @nextStep="nextStep()" 
-        />
-      
-      <div
-        id="stepper"
-        :class="isMobile ? 'tw-w-full' : 'tw-w-1/2'"        
-      >
-        <q-linear-progress          
+          <img :src="logo" class="tw-h-20 tw-w-auto" />
+        </a>
+      </div>
+      <component
+        class="left-component"
+        :is="leftComponent"
+        @activeNextStep="onActiveNextStep"
+        @previousStep="previousStep()"
+        @nextStep="nextStep()"
+        @setCache="setCache"
+        :getCache="getCache"
+      />
+
+      <div id="stepper" :class="isMobile ? 'tw-w-full' : 'tw-w-1/2'">
+        <q-linear-progress
           size="sm"
           color="primary"
           :track-color="progress ? 'blue-grey-1' : 'white'"
           :value="progress"
         />
+        <!-- buttons Previus and Next -->
         <div class="row justify-between">
           <div class="col-4 q-pa-md">
             <q-btn
@@ -52,7 +48,7 @@
             <q-btn
               rounded
               no-caps
-              :disabled="false"
+              :disabled="isActiveButtonNext"
               icon-right="fa-light fa-arrow-right tw-ml-0 sm:tw-ml-2"
               @click="nextStep()"
               unelevated
@@ -61,53 +57,51 @@
               v-if="progress"
             />
           </div>
-        </div>        
+        </div>
       </div>
     </div>
     <!--right component-->
-    <div id="right"
-      v-if="currentStep?.right"       
+    <div
+      id="right"
+      v-if="currentStep?.right"
       class="row col-6 gt-sm items-center"
     >
-      <component 
+      <component
         class="right-component"
         :is="rightComponent"
         @previousStep="previousStep()"
-        @nextStep="nextStep()"            
+        @nextStep="nextStep()"
       />
     </div>
-    <inner-loading :visible="loading"/>    
+    <inner-loading :visible="loading" />
   </div>
 </template>
 <script>
+import { defineComponent, Transition } from 'vue';
+import controller from 'modules/qtenant/_pages/wizard/controller';
 
-import {defineComponent, Transition }  from 'vue'
-import controller from 'modules/qtenant/_pages/wizard/controller'
-
-export default defineComponent({  
+export default defineComponent({
   data() {
     return {
-      loading: false,      
-      logo: this.$store.state.qsiteApp.logo,      
-      urlBase: this.$store.state.qsiteApp.baseUrl
-    }
-  },  
-  setup(props, {emit}) {
-    return controller(props, emit)
-  }, 
+      loading: false,
+      logo: this.$store.state.qsiteApp.logo,
+      urlBase: this.$store.state.qsiteApp.baseUrl,
+    };
+  },
+  setup(props, { emit }) {
+    return controller(props, emit);
+  },
   computed: {
-    isMobile(){
-      return this.$q.screen.lt.md
-    }
-  }
-})
-
+    isMobile() {
+      return this.$q.screen.lt.md;
+    },
+  },
+});
 </script>
-<style lang="scss">  
-
+<style lang="scss">
 #tenant-wizard {
   #logo {
-    width: 100%; 
+    width: 100%;
     height: 80px;
   }
 
@@ -127,8 +121,6 @@ export default defineComponent({
   }
 }
 
-
-
 @keyframes fade-in-left {
   0% {
     -webkit-transform: translateX(-50px);
@@ -141,7 +133,5 @@ export default defineComponent({
     opacity: 1;
   }
 }
-
-
 </style>
 
