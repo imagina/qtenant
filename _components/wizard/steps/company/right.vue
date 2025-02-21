@@ -4,7 +4,7 @@
       <p>
         Acepta nuestras Condiciones de uso para disfrutar de todas las bondades
         que tenemos para ti
-        <q-btn label="next" />
+        <q-btn label="next" @click="$emit('nextStep')" />
       </p>
     </div>
   </div>
