@@ -1,73 +1,81 @@
 <template>
   <div
     id="tenant-wizard"
-    class="tw-h-screen overflow-auto row items-stretch relative-position"
+    class="tw-h-screen overflow-none relative-position"
   >
     <!--Inner Loading-->
     <inner-loading :visible="loading" />
-    <!-- Top Content -->
+    <!--Logo-->
     <div id="logo" class="flex justify-center tw-bg-white">
-      <!--Logo-->
       <a :href="urlBase">
         <img :src="logo" class="tw-h-20 tw-w-auto" />
       </a>
-      <!--Progress-->
-      <q-linear-progress
-        size="sm"
-        color="green"
-        track-color="transparent"
-        :value="progress"
-      />
     </div>
-    <!--left component-->
-    <div
-      id="left"
-      v-if="currentStep?.left"
-      class="row"
-      :class="currentStep.right ? 'col-12 col-md-6' : 'col-12'"
-    >
-      <!-- Dybnamic Left Component -->
-      <component class="left-component" :is="leftComponent" />
-
-      <div id="stepper" :class="isMobile ? 'tw-w-full' : 'tw-w-1/2'">
-        <!-- Progress Actions-->
-        <div class="row justify-between">
-          <div class="col-4 q-pa-md">
-            <q-btn
-              rounded
-              no-caps
-              :disabled="false"
-              unelevated
-              color="blue-grey"
-              icon="fa-light fa-arrow-left"
-              @click="previousStep()"
-              :label="isMobile ? '' : $tr('isite.cms.label.previous')"
-              v-if="currentStepIndex"
-            />
-          </div>
-          <div class="col-4 q-pa-md text-right">
-            <q-btn
-              rounded
-              no-caps
-              :disabled="false"
-              icon-right="fa-light fa-arrow-right tw-ml-0 sm:tw-ml-2"
-              @click="nextStep()"
-              unelevated
-              color="green"
-              :label="isMobile ? '' : $tr('isite.cms.label.continue')"
-              v-if="currentStepIndex"
-            />
-          </div>
+    <!-- Scroll Area (view heihgt - logo height - progress actions)-->
+    <q-scroll-area style="height: calc(100vh - 80px - 75px); width: 100%">
+      <div style="height: calc(100vh - 80px - 75px); width: 100%" class="row">
+        <!--left component-->
+        <div id="left" v-if="currentStep?.left"
+             :class="(currentStep.right ? 'col-12 col-md-6' : 'col-12')">
+          <!-- Dybnamic Left Component -->
+          <component class="left-component" :is="leftComponent" />
+        </div>
+        <!--right component-->
+        <div
+          id="right"
+          v-if="currentStep?.right"
+          class="row col-6 gt-sm items-center"
+        >
+          <component class="right-component" :is="rightComponent" />
         </div>
       </div>
-    </div>
-    <!--right component-->
-    <div
-      id="right"
-      v-if="currentStep?.right"
-      class="row col-6 gt-sm items-center"
-    >
-      <component class="right-component" :is="rightComponent" />
+    </q-scroll-area>
+    <!-- Progress Action -->
+    <div id="stepper" class="row justify-center full-width">
+      <!-- Welcome Actions-->
+      <div class="text-center tw-pb-6" v-if="!currentStepIndex">
+        <q-btn
+          rounded
+          class="tw-animate-bounce"
+          no-caps
+          size="16px"
+          color="green"
+          @click="nextStep()"
+          :label="`${$tr('isite.cms.label.start')} 🚀`"
+        />
+      </div>
+      <!-- Navigation -->
+      <div v-else :class="isMobile ? 'tw-w-full' : 'tw-w-1/2'">
+        <!--Linear Progress-->
+        <q-linear-progress
+          size="sm"
+          color="green"
+          track-color="cyan"
+          :value="progress"
+        />
+        <div class="row justify-between tw-p-4">
+          <q-btn
+            rounded
+            no-caps
+            :disabled="false"
+            unelevated outline
+            color="green"
+            icon="fa-light fa-arrow-left"
+            @click="previousStep()"
+            :label="isMobile ? '' : $tr('isite.cms.label.previous')"
+          />
+          <q-btn
+            rounded
+            no-caps
+            :disabled="false"
+            icon-right="fa-light fa-arrow-right tw-ml-0 sm:tw-ml-2"
+            @click="nextStep()"
+            unelevated
+            color="green"
+            :label="isMobile ? '' : $tr('isite.cms.label.continue')"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -76,14 +84,15 @@ import { defineComponent, provide } from 'vue';
 import controller from 'modules/qtenant/_pages/wizard/controller';
 
 export default defineComponent({
-  setup(props, { emit }) {
+  setup (props, { emit })
+  {
     // Initialize the controller instance
     const controllerInstance = controller(props, emit);
     // Provide the controller for child components
     provide('controller', controllerInstance);
     // Return the controller instance to make it available to the template
     return controllerInstance;
-  },
+  }
 });
 </script>
 <style lang="scss">
@@ -92,14 +101,12 @@ export default defineComponent({
 
   #logo {
     width: 100%;
-    height: 84px;
+    height: 80px;
     box-shadow: 0 0 6px -2px #8d8d8d;
   }
 
   #stepper {
-    bottom: 0;
-    left: 0;
-    position: fixed;
+    height: 75px;
   }
 
   .right-component {

@@ -89,7 +89,7 @@ export default function controller(props: any, emit: any) {
     }),
     progress: computed(() => {
       const progressPercent = 1 / steps.length;
-      return progressPercent * (computeds.currentStepIndex.value + 1);
+      return progressPercent * (computeds.currentStepIndex.value);
     }),
   };
 

@@ -9,19 +9,9 @@
       </div>
       <!--Description-->
       <div
-        class="tw-text-lg md:tw-text-xl tw-mb-6"
+        class="tw-text-md md:tw-text-lg tw-mb-6"
         v-html="stepDescription"
       ></div>
-      <q-btn
-        rounded
-        class="tw-mt-6 tw-animate-bounce"
-        no-caps
-        size="lg"
-        color="green"
-        @click="nextStep()"
-      >
-        {{ $tr('isite.cms.label.start') }} 🚀
-      </q-btn>
     </div>
   </div>
 </template>
@@ -29,18 +19,20 @@
 import { defineComponent, inject } from 'vue';
 
 export default {
-  setup() {
+  setup ()
+  {
     return inject('controller'); // Inject the controller;
   },
-  data() {
+  data ()
+  {
     return {
       stepTitle: '(pt)¡Bienvenido!',
       stepImage:
         'https://weygo-v10.ozonohosting.com/modules/isite/img/gamification/welcome.png',
       stepDescription:
-        '(pt) Aquí podras crear tu sitio de manera sencilla y eficiente. te guiaremos en cada paso para que puedas expresar tu visión en línea. ¡Comencemos a crear tu sitio!',
+        '(pt) Aquí podras crear tu sitio de manera sencilla y eficiente. te guiaremos en cada paso para que puedas expresar tu visión en línea. ¡Comencemos a crear tu sitio!'
     };
-  },
+  }
 };
 </script>
 <style scope>
