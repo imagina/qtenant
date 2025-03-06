@@ -42,7 +42,8 @@ export default {
             color: 'primary',
             rounded: true,
             dense: false,
-            standout: true
+            autofocus: true,
+            placeholder: '(pt)Por Ej. Restaurante Mil Delicias'
           }
         }
       }

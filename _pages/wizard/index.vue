@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="tenant-wizard"
-    class="tw-h-screen overflow-none relative-position"
-  >
+  <div id="tenant-wizard" class="tw-h-screen overflow-none relative-position">
     <!--Inner Loading-->
     <inner-loading :visible="loading" />
     <!--Logo-->
@@ -13,10 +10,13 @@
     </div>
     <!-- Scroll Area (view heihgt - logo height - progress actions)-->
     <q-scroll-area style="height: calc(100vh - 80px - 75px); width: 100%">
-      <div style="height: calc(100vh - 80px - 75px); width: 100%" class="row">
+      <div id="wizard-content" class="row">
         <!--left component-->
-        <div id="left" v-if="currentStep?.left"
-             :class="(currentStep.right ? 'col-12 col-md-6' : 'col-12')">
+        <div
+          id="left"
+          v-if="currentStep?.left"
+          :class="currentStep.right ? 'col-12 col-md-6' : 'col-12'"
+        >
           <!-- Dybnamic Left Component -->
           <component class="left-component" :is="leftComponent" />
         </div>
@@ -58,21 +58,22 @@
             rounded
             no-caps
             :disabled="false"
-            unelevated outline
+            unelevated
+            outline
             color="green"
             icon="fa-light fa-arrow-left"
             @click="previousStep()"
-            :label="isMobile ? '' : $tr('isite.cms.label.previous')"
+            :label="$tr('isite.cms.label.previous')"
           />
           <q-btn
             rounded
             no-caps
             :disabled="false"
-            icon-right="fa-light fa-arrow-right tw-ml-0 sm:tw-ml-2"
+            icon-right="fa-light fa-arrow-right"
             @click="nextStep()"
             unelevated
             color="green"
-            :label="isMobile ? '' : $tr('isite.cms.label.continue')"
+            :label="$tr('isite.cms.label.continue')"
           />
         </div>
       </div>
@@ -84,15 +85,14 @@ import { defineComponent, provide } from 'vue';
 import controller from 'modules/qtenant/_pages/wizard/controller';
 
 export default defineComponent({
-  setup (props, { emit })
-  {
+  setup(props, { emit }) {
     // Initialize the controller instance
     const controllerInstance = controller(props, emit);
     // Provide the controller for child components
     provide('controller', controllerInstance);
     // Return the controller instance to make it available to the template
     return controllerInstance;
-  }
+  },
 });
 </script>
 <style lang="scss">
@@ -105,11 +105,17 @@ export default defineComponent({
     box-shadow: 0 0 6px -2px #8d8d8d;
   }
 
+  .q-scrollarea__content {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Optional: Center horizontally as well */
+  }
+
   #stepper {
     height: 75px;
   }
 
-  .right-component {
+  .left-component {
     -webkit-animation: fade-in-left 0.6s ease;
     animation: fade-in-left 0.6s ease;
   }
