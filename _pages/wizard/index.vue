@@ -1,39 +1,36 @@
 <template>
-  <div 
-    id="tenant-wizard" 
-    class="tw-h-screen overflow-auto row items-stretch"
+  <div
+    id="tenant-wizard"
+    class="tw-h-screen overflow-auto row items-stretch relative-position"
   >
+    <!--Inner Loading-->
+    <inner-loading :visible="loading" />
+    <!-- Top Content -->
+    <div id="logo" class="flex justify-center tw-bg-white">
+      <!--Logo-->
+      <a :href="urlBase">
+        <img :src="logo" class="tw-h-20 tw-w-auto" />
+      </a>
+      <!--Progress-->
+      <q-linear-progress
+        size="sm"
+        color="green"
+        track-color="transparent"
+        :value="progress"
+      />
+    </div>
     <!--left component-->
-    <div id="left" 
-      v-if="currentStep?.left" 
+    <div
+      id="left"
+      v-if="currentStep?.left"
       class="row"
       :class="currentStep.right ? 'col-12 col-md-6' : 'col-12'"
     >
-      <div 
-        id="logo"
-        class="flex justify-center tw-bg-white"
-      >
-        <a :href="urlBase">
-          <img :src="logo" class="tw-h-20 tw-w-auto"/>
-        </a>        
-      </div>      
-        <component
-          class="left-component"
-          :is="leftComponent"
-          @previousStep="previousStep()"
-          @nextStep="nextStep()" 
-        />
-      
-      <div
-        id="stepper"
-        :class="isMobile ? 'tw-w-full' : 'tw-w-1/2'"        
-      >
-        <q-linear-progress          
-          size="sm"
-          color="primary"
-          :track-color="progress ? 'blue-grey-1' : 'white'"
-          :value="progress"
-        />
+      <!-- Dybnamic Left Component -->
+      <component class="left-component" :is="leftComponent" />
+
+      <div id="stepper" :class="isMobile ? 'tw-w-full' : 'tw-w-1/2'">
+        <!-- Progress Actions-->
         <div class="row justify-between">
           <div class="col-4 q-pa-md">
             <q-btn
@@ -45,7 +42,7 @@
               icon="fa-light fa-arrow-left"
               @click="previousStep()"
               :label="isMobile ? '' : $tr('isite.cms.label.previous')"
-              v-if="progress"
+              v-if="currentStepIndex"
             />
           </div>
           <div class="col-4 q-pa-md text-right">
@@ -58,57 +55,45 @@
               unelevated
               color="green"
               :label="isMobile ? '' : $tr('isite.cms.label.continue')"
-              v-if="progress"
+              v-if="currentStepIndex"
             />
           </div>
-        </div>        
+        </div>
       </div>
     </div>
     <!--right component-->
-    <div id="right"
-      v-if="currentStep?.right"       
+    <div
+      id="right"
+      v-if="currentStep?.right"
       class="row col-6 gt-sm items-center"
     >
-      <component 
-        class="right-component"
-        :is="rightComponent"
-        @previousStep="previousStep()"
-        @nextStep="nextStep()"            
-      />
+      <component class="right-component" :is="rightComponent" />
     </div>
-    <inner-loading :visible="loading"/>    
   </div>
 </template>
-<script>
+<script lang="ts">
+import { defineComponent, provide } from 'vue';
+import controller from 'modules/qtenant/_pages/wizard/controller';
 
-import {defineComponent, Transition }  from 'vue'
-import controller from 'modules/qtenant/_pages/wizard/controller'
-
-export default defineComponent({  
-  data() {
-    return {
-      loading: false,      
-      logo: this.$store.state.qsiteApp.logo,      
-      urlBase: this.$store.state.qsiteApp.baseUrl
-    }
-  },  
-  setup(props, {emit}) {
-    return controller(props, emit)
-  }, 
-  computed: {
-    isMobile(){
-      return this.$q.screen.lt.md
-    }
-  }
-})
-
+export default defineComponent({
+  setup(props, { emit }) {
+    // Initialize the controller instance
+    const controllerInstance = controller(props, emit);
+    // Provide the controller for child components
+    provide('controller', controllerInstance);
+    // Return the controller instance to make it available to the template
+    return controllerInstance;
+  },
+});
 </script>
-<style lang="scss">  
-
+<style lang="scss">
 #tenant-wizard {
+  background-color: #e4e2f2;
+
   #logo {
-    width: 100%; 
-    height: 80px;
+    width: 100%;
+    height: 84px;
+    box-shadow: 0 0 6px -2px #8d8d8d;
   }
 
   #stepper {
@@ -127,8 +112,6 @@ export default defineComponent({
   }
 }
 
-
-
 @keyframes fade-in-left {
   0% {
     -webkit-transform: translateX(-50px);
@@ -141,7 +124,4 @@ export default defineComponent({
     opacity: 1;
   }
 }
-
-
 </style>
-
