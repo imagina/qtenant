@@ -46,6 +46,14 @@ export default function controller(props: any, emit: any) {
         ),
       }
     },
+    {
+      name: 'themes',
+      left: {
+        component: defineAsyncComponent(
+          () => import('modules/qtenant/_pages/wizard/views/themes.vue')
+        ),
+      }
+    },
   ];
 
   // States
@@ -53,7 +61,7 @@ export default function controller(props: any, emit: any) {
     loading: false,
     leftComponent: shallowRef(),
     rightComponent: shallowRef(),
-    form: {title: null, selectedModules : []},
+    form: {title: null, selectedModules : [], selectedTheme: null},
     currentStep: {},
     systemName: 'qtenant.wizard',
     logo: proxy.$store.state.qsiteApp.logo,

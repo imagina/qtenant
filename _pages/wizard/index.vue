@@ -10,7 +10,7 @@
     </div>
     <!-- Scroll Area (view heihgt - logo height - progress actions)-->
     <q-scroll-area style="height: calc(100vh - 80px - 75px); width: 100%">
-      <div id="wizard-content" class="row">
+      <div id="wizard-content" class="row tw-py-10">
         <!--left component-->
         <div
           id="left"
