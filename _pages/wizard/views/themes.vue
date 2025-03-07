@@ -15,13 +15,14 @@
           :key="index"
           @click="selectTheme(theme)"
           :class="[
-            'tw-flex tw-flex-col tw-items-center tw-justify-center tw-border-2 tw-rounded-lg',
+            'tw-flex tw-flex-col tw-items-center tw-justify-center',
             'tw-p-4 tw-relative tw-cursor-pointer tw-overflow-hidden tw-h-64',
+            'tw-bg-white tw-shadow-md tw-rounded-lg',
             'tw-transition-all tw-duration-500 tw-group',
             'hover:tw-scale-105 hover:tw-border-blue-500',
             form.selectedTheme === theme.name
-              ? 'tw-border-blue-500 tw-shadow-lg' // Selected effect
-              : 'tw-border-gray-300',
+              ? 'tw-border-2 tw-border-blue-500 tw-shadow-lg' // Selected effect
+              : 'tw-border-2 tw-border-white',
           ]"
         >
           <!-- Theme Image with Scroll Effect on Hover -->

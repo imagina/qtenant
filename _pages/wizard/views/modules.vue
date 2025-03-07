@@ -17,13 +17,14 @@
           :key="index"
           @click="toggleSelect(module)"
           :class="[
-            'tw-flex tw-flex-col tw-items-center tw-justify-center tw-border-2',
+            'tw-flex tw-flex-col tw-items-center tw-justify-center',
+            'tw-bg-white tw-shadow-md tw-rounded-lg',
             'tw-rounded-lg tw-p-4 tw-relative tw-cursor-pointer',
             'tw-transition-all tw-duration-300 tw-group',
             'hover:tw-scale-105 hover:tw-border-blue-500',
             form.selectedModules.includes(module.name)
-              ? 'tw-border-blue-500 tw-shadow-lg' // Selected item effect
-              : 'tw-border-gray-300',
+              ? 'tw-border-2 tw-border-blue-500 tw-shadow-lg' // Selected item effect
+              : 'tw-border-2 tw-border-white',
           ]"
         >
           <q-icon :name="module.icon" class="tw-text-2xl tw-mb-2" color="blue" />
