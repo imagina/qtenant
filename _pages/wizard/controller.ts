@@ -39,30 +39,12 @@ export default function controller(props: any, emit: any) {
       }
     },
     {
-      name: 'terms2',
+      name: 'modules',
       left: {
         component: defineAsyncComponent(
-          () => import('modules/qtenant/_components/wizard/steps/terms/left')
+          () => import('modules/qtenant/_pages/wizard/views/modules.vue')
         ),
-      },
-      right: {
-        component: defineAsyncComponent(
-          () => import('modules/qtenant/_components/wizard/steps/terms/right')
-        ),
-      },
-    },
-    {
-      name: 'terms3',
-      left: {
-        component: defineAsyncComponent(
-          () => import('modules/qtenant/_components/wizard/steps/terms/left')
-        ),
-      },
-      right: {
-        component: defineAsyncComponent(
-          () => import('modules/qtenant/_components/wizard/steps/terms/right')
-        ),
-      },
+      }
     },
   ];
 
@@ -71,7 +53,7 @@ export default function controller(props: any, emit: any) {
     loading: false,
     leftComponent: shallowRef(),
     rightComponent: shallowRef(),
-    form: {title: null},
+    form: {title: null, selectedModules : []},
     currentStep: {},
     systemName: 'qtenant.wizard',
     logo: proxy.$store.state.qsiteApp.logo,
