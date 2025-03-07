@@ -52,19 +52,7 @@ export default {
     return {
       stepTitle: '(pt)¿Qué necesita tu página?',
       stepDescription:
-        '(pt) Tenemos muchas soluciones para ti, selecciona las que mejor se adapten',
-      modules: [
-        { name: "ecommerce", title: "Sell Online", icon: "fal fa-shopping-cart" },
-        { name: "reservations", title: "Get Reservations", icon: "fal fa-calendar-check" },
-        { name: "documents", title: "Manage Documents", icon: "fal fa-file-alt" },
-        { name: "chat", title: "Live Chat Support", icon: "fal fa-comments" },
-        { name: "blog", title: "Share Blog Posts", icon: "fal fa-newspaper" },
-        { name: "analytics", title: "Track Analytics", icon: "fal fa-chart-line" },
-        { name: "membership", title: "Membership System", icon: "fal fa-id-card" },
-        { name: "notifications", title: "Send Notifications", icon: "fal fa-bell" },
-        { name: "tasks", title: "Manage Tasks", icon: "fal fa-tasks" },
-        { name: "wallet", title: "Digital Wallet", icon: "fal fa-wallet" },
-      ]
+        '(pt) Tenemos muchas soluciones para ti, selecciona las que mejor se adapten'
     };
   },
   methods: {

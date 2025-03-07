@@ -19,7 +19,7 @@
             'tw-p-4 tw-relative tw-cursor-pointer tw-overflow-hidden tw-h-64',
             'tw-transition-all tw-duration-500 tw-group',
             'hover:tw-scale-105 hover:tw-border-blue-500',
-            selectedTheme === theme.name
+            form.selectedTheme === theme.name
               ? 'tw-border-blue-500 tw-shadow-lg' // Selected effect
               : 'tw-border-gray-300',
           ]"
@@ -36,7 +36,7 @@
 
           <!-- Check Icon for Selected Theme -->
           <q-icon
-            v-if="selectedTheme === theme.name"
+            v-if="form.selectedTheme === theme.name"
             name="fa-light fa-check-circle"
             size="20px"
             class="tw-text-blue-500 tw-absolute tw-top-2 tw-right-2 tw-transition-opacity tw-duration-500"
@@ -57,25 +57,12 @@ export default {
   data() {
     return {
       stepTitle: "(pt)Choose Your Theme",
-      stepDescription: "(pt)Select a theme that best matches your style.",
-      selectedTheme: null,
-      themes: [
-        { name: "modern", title: "Modern Style", image: "https://images.pexels.com/photos/3184450/pexels-photo-3184450.jpeg?auto=compress&cs=tinysrgb&w=300&h=500" },
-        { name: "classic", title: "Classic Look", image: "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=300&h=500" },
-        { name: "minimalist", title: "Minimalist Design", image: "https://images.pexels.com/photos/7060816/pexels-photo-7060816.jpeg?auto=compress&cs=tinysrgb&w=300&h=500" },
-        { name: "dark", title: "Dark Mode", image: "https://images.pexels.com/photos/594077/pexels-photo-594077.jpeg?auto=compress&cs=tinysrgb&w=300&h=500" },
-        { name: "colorful", title: "Colorful Theme", image: "https://images.pexels.com/photos/2876787/pexels-photo-2876787.jpeg?auto=compress&cs=tinysrgb&w=300&h=500" },
-        { name: "elegant", title: "Elegant Feel", image: "https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg?auto=compress&cs=tinysrgb&w=300&h=500" },
-        { name: "business", title: "Business Theme", image: "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=300&h=500" },
-        { name: "portfolio", title: "Portfolio Showcase", image: "https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=300&h=500" },
-        { name: "tech", title: "Tech & Innovation", image: "https://images.pexels.com/photos/11813138/pexels-photo-11813138.jpeg?auto=compress&cs=tinysrgb&w=300&h=500" },
-        { name: "creative", title: "Creative Agency", image: "https://images.pexels.com/photos/3768883/pexels-photo-3768883.jpeg?auto=compress&cs=tinysrgb&w=300&h=500" }
-      ]
+      stepDescription: "(pt)Select a theme that best matches your style."
     };
   },
   methods: {
     selectTheme(theme) {
-      this.selectedTheme = theme.name;
+      this.form.selectedTheme = theme.name;
     },
   },
 };
