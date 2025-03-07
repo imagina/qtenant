@@ -62,6 +62,14 @@ export default function controller(props: any, emit: any) {
         ),
       }
     },
+    {
+      name: 'creation',
+      left: {
+        component: defineAsyncComponent(
+          () => import('modules/qtenant/_pages/wizard/views/creation.vue')
+        ),
+      }
+    },
   ];
 
   // States
