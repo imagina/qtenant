@@ -15,7 +15,7 @@
         class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-4"
       >
         <div
-          v-for="(module, index) in modulesTenantConfig"
+          v-for="(module, index) in modules"
           :key="index"
           @click="toggleSelect(module)"
           :class="[

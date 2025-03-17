@@ -51,15 +51,15 @@
           >
             <div
               v-for="module in selectedModules"
-              :key="module.name"
+              :key="module.client.title"
               class="tw-flex tw-items-center tw-border tw-rounded-lg tw-p-4 tw-shadow-sm tw-mb-2"
             >
               <q-icon
-                :name="module.icon"
+                :name="module.client.icon"
                 class="tw-text-2xl tw-text-blue-500 tw-mr-3"
               />
               <div class="tw-text-sm tw-font-medium tw-text-gray-700">
-                {{ module.title }}
+                {{ module.client.title }}
               </div>
             </div>
           </div>
@@ -82,7 +82,7 @@
 
           <div class="tw-mt-4 tw-overflow-hidden tw-rounded-md">
             <img
-              :src="selectedTheme.image"
+              :src="selectedTheme.mediaFiles.internalimage.mediumThumb"
               :alt="selectedTheme.title"
               class="tw-w-full tw-h-56 tw-object-cover tw-rounded-md"
             />
@@ -113,7 +113,7 @@ export default {
     },
     selectedTheme() {
       return (
-        this.themes.find((theme) => theme.name === this.form.selectedTheme) ||
+        this.themes.find((theme) => theme.id === this.form.selectedTheme) ||
         {}
       );
     },

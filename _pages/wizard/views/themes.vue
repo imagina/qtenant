@@ -20,14 +20,14 @@
             'tw-bg-white tw-shadow-md tw-rounded-lg',
             'tw-transition-all tw-duration-500 tw-group',
             'hover:tw-scale-105 hover:tw-border-blue-500',
-            form.selectedTheme === theme.name
+            form.selectedTheme === theme.id
               ? 'tw-border-2 tw-border-blue-500 tw-shadow-lg' // Selected effect
               : 'tw-border-2 tw-border-white',
           ]"
         >
           <!-- Theme Image with Scroll Effect on Hover -->
           <div class="tw-w-full tw-h-48 tw-overflow-hidden tw-rounded-md tw-relative tw-transition-all tw-duration-500 hover:tw-h-80 hover:tw-overflow-y-auto">
-            <img :src="theme.image" :alt="theme.title" class="tw-w-full tw-object-cover tw-object-top" />
+            <img :src="theme.mediaFiles.internalimage.mediumThumb" :alt="theme.title" class="tw-w-full tw-object-cover tw-object-top" />
           </div>
 
           <!-- Theme Title -->
@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     selectTheme(theme) {
-      this.form.selectedTheme = theme.name;
+      this.form.selectedTheme = theme.id;
     },
   },
 };
