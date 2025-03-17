@@ -1,16 +1,13 @@
 import {
   computed,
   reactive,
-  ref,
   onMounted,
   toRefs,
-  watch,
   getCurrentInstance,
-  useSlots,
-  markRaw,
   shallowRef,
   defineAsyncComponent,
 } from 'vue';
+import service from './services'
 import { cache } from 'src/plugins/utils';
 
 export default function controller(props: any, emit: any) {
@@ -75,6 +72,7 @@ export default function controller(props: any, emit: any) {
   // States
   const state = reactive({
     loading: false,
+    modulesTenantConfig: null,
     systemName: 'qtenant.wizard',
     logo: proxy.$store.state.qsiteApp.logo,
     urlBase: proxy.$store.state.qsiteApp.baseUrl,
@@ -181,6 +179,7 @@ export default function controller(props: any, emit: any) {
       //restore last step
       const step = (await methods.getCache('step')) || steps[0].name;
       methods.setStep(step);
+      state.modulesTenantConfig = await service.getModulesTenantConfig(true)
     },
   };
 
