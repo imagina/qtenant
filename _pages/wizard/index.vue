@@ -1,7 +1,5 @@
 <template>
   <div id="tenant-wizard" class="tw-h-screen overflow-none relative-position">
-    <!--Inner Loading-->
-    <inner-loading :visible="loading" />
     <!--Logo-->
     <div id="logo" class="flex justify-center tw-bg-white">
       <a :href="urlBase">

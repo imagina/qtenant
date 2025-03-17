@@ -55,7 +55,7 @@ export default {
         .index(`${baseTenantUrl}/api${config('apiRoutes.qbuilder.layouts')}`, requestParams)
         .then((response) =>
         {
-          resolve(response.data.data);
+          resolve(response.data);
         }).catch(error => resolve([]));
     });
   }

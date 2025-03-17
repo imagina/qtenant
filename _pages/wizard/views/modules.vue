@@ -12,6 +12,7 @@
       ></div>
       <!--Choose modules-->
       <div
+        v-if="dataLoaded"
         class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-4"
       >
         <div
@@ -55,6 +56,14 @@
             class="tw-text-blue-500 tw-absolute tw-top-2 tw-right-2 tw-transition-opacity tw-duration-500"
           />
         </div>
+      </div>
+      <!--Loading data-->
+      <div
+        v-else
+        class="flex flex-col items-center justify-center h-full space-y-2 tw-text-blue-500"
+      >
+        <q-spinner-box size="50px" />
+        <span>{{ $tr('isite.cms.label.loading') }}...</span>
       </div>
     </div>
   </div>
