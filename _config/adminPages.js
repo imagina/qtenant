@@ -3,7 +3,7 @@ export default {
 	 //organization Wizard
 	wizard: {
     permission: null,
-    //authenticated: true,
+    authenticated: true,
     activated: true,
     path: '/tenant/wizard',
     name: 'app.tenant.wizard',

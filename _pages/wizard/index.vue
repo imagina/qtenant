@@ -33,7 +33,7 @@
     <!-- Progress Action -->
     <div id="stepper" class="row justify-center full-width">
       <!-- Welcome Actions-->
-      <div class="text-center tw-pb-6" v-if="!currentStepIndex">
+      <div class="text-center tw-pb-6" v-if="!currentStep">
         <q-btn
           rounded
           class="tw-animate-bounce"
@@ -45,7 +45,7 @@
         />
       </div>
       <!-- Navigation -->
-      <div v-else :class="isMobile ? 'tw-w-full' : 'tw-w-1/2'">
+      <div v-else class="tw-w-full md:tw-w-1/2">
         <!--Linear Progress-->
         <q-linear-progress
           size="sm"

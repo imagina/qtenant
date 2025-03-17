@@ -1,6 +1,6 @@
 <template>
-  <div id="step-project-name" class="full-width row justify-center">
-    <div id="step-project-name-content" class="tw-text-center tw-px-6">
+  <div id="step-modules" class="row justify-center">
+    <div id="step-modules-content" class="tw-text-center tw-px-6">
       <!-- Title -->
       <div class="text-cyan tw-font-bold tw-text-2xl tw-mb-6">
         {{ stepTitle }}
@@ -87,7 +87,7 @@ export default {
 </script>
 
 <style scoped>
-#step-project-name #step-project-name-content {
+#step-project-name #step-modules-content {
   max-width: 750px;
 }
 </style>
