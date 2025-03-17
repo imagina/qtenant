@@ -44,7 +44,6 @@ export default {
           params,
         })
         .then((response) => {
-          console.warn(response.data.data)
           resolve(response.data.data)
         }).catch(error => resolve([]));
     });

@@ -14,8 +14,8 @@
         <!--left component-->
         <div
           id="left"
-          v-if="currentStep?.left"
-          :class="currentStep.right ? 'col-12 col-md-6' : 'col-12'"
+          v-if="leftComponent"
+          :class="rightComponent ? 'col-12 col-md-6' : 'col-12'"
         >
           <!-- Dybnamic Left Component -->
           <component class="left-component" :is="leftComponent" />
@@ -23,7 +23,7 @@
         <!--right component-->
         <div
           id="right"
-          v-if="currentStep?.right"
+          v-if="rightComponent"
           class="row col-6 gt-sm items-center"
         >
           <component class="right-component" :is="rightComponent" />

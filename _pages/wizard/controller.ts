@@ -7,7 +7,8 @@ import {
   shallowRef,
   defineAsyncComponent,
 } from 'vue';
-import service from './services'
+import service from './services';
+import { useStorage } from '@vueuse/core';
 import { cache } from 'src/plugins/utils';
 
 export default function controller(props: any, emit: any) {
@@ -20,67 +21,57 @@ export default function controller(props: any, emit: any) {
 
   const steps = [
     {
-      name: 'wellcome',
-      left: {
-        component: defineAsyncComponent(
-          () => import('modules/qtenant/_pages/wizard/views/welcome.vue')
-        ),
-      },
+      name: 'welcome',
+      leftComponent: defineAsyncComponent(
+        () => import('modules/qtenant/_pages/wizard/views/welcome.vue')
+      ),
     },
     {
       name: 'projectName',
-      left: {
-        component: defineAsyncComponent(
-          () => import('modules/qtenant/_pages/wizard/views/projectName.vue')
-        ),
-      }
+      leftComponent: defineAsyncComponent(
+        () => import('modules/qtenant/_pages/wizard/views/projectName.vue')
+      ),
     },
     {
       name: 'modules',
-      left: {
-        component: defineAsyncComponent(
-          () => import('modules/qtenant/_pages/wizard/views/modules.vue')
-        ),
-      }
+      leftComponent: defineAsyncComponent(
+        () => import('modules/qtenant/_pages/wizard/views/modules.vue')
+      ),
     },
     {
       name: 'themes',
-      left: {
-        component: defineAsyncComponent(
-          () => import('modules/qtenant/_pages/wizard/views/themes.vue')
-        ),
-      }
+      leftComponent: defineAsyncComponent(
+        () => import('modules/qtenant/_pages/wizard/views/themes.vue')
+      ),
     },
     {
       name: 'resume',
-      left: {
-        component: defineAsyncComponent(
-          () => import('modules/qtenant/_pages/wizard/views/resume.vue')
-        ),
-      }
+      leftComponent: defineAsyncComponent(
+        () => import('modules/qtenant/_pages/wizard/views/resume.vue')
+      ),
     },
     {
       name: 'creation',
-      left: {
-        component: defineAsyncComponent(
-          () => import('modules/qtenant/_pages/wizard/views/creation.vue')
-        ),
-      }
+      leftComponent: defineAsyncComponent(
+        () => import('modules/qtenant/_pages/wizard/views/creation.vue')
+      ),
     },
   ];
 
   // States
   const state = reactive({
     loading: false,
-    modules: [],
-    themes: [],
-    systemName: 'qtenant.wizard',
     logo: proxy.$store.state.qsiteApp.logo,
-    urlBase: proxy.$store.state.qsiteApp.baseUrl,
+    currentStep: useStorage('tenant-step', 0),
     leftComponent: shallowRef(),
     rightComponent: shallowRef(),
-    form: {title: null, selectedModules : [], selectedTheme: null},
-    currentStep: {}
+
+    modules: [],
+    themes: [],
+    form: { title: null, selectedModules: [], selectedTheme: null },
+
+    systemName: 'qtenant.wizard',
+    urlBase: proxy.$store.state.qsiteApp.baseUrl,
   });
 
   // Computed
@@ -89,80 +80,42 @@ export default function controller(props: any, emit: any) {
       return proxy.$q.screen.lt.md;
     }),
     currentStepIndex: computed(() => {
-      if(!state.currentStep.name) return 0
-      return steps.findIndex((obj) => obj.name === state.currentStep.name);
+      if (!state.currentStep) return 0;
+      return steps.findIndex((obj) => obj.name === state.currentStep);
     }),
     progress: computed(() => {
       const progressPercent = 1 / steps.length;
-      return progressPercent * (computeds.currentStepIndex.value);
+      return progressPercent * computeds.currentStepIndex.value;
     }),
   };
 
   // Methods
   const methods = {
-    // methodKey: () => {}
-    async setCache(key, data) {
-      let cacheData = await cache.get.item(state.systemName);
-      if (!cacheData) cacheData = {};
-      cacheData[key] = data;
-      await cache.set(state.systemName, cacheData);
+    async init() {
+      methods.setStep(state.currentStep);
+      methods.getTenantConfigs();
     },
-    async getCache(key) {
-      const data = await cache.get.item(state.systemName);
-      if (data && data[key]) return data[key];
-      return null;
-    },
-    removeCache() {
-      //this.$cache.remove('org-wizard-data');
-    },
-    setStep(name) {
-      if (!name) return false;
-      const step = steps.find((obj) => obj.name === name);
+    setStep(stepIndex) {
+      const step = steps[stepIndex];
       if (step) {
         state.loading = true;
-        state.currentStep = step;
-        methods.setCache('step', step.name);
-        state.leftComponent = step.left?.component || null;
-        state.rightComponent = step.right?.component || null;
+        state.currentStep = stepIndex;
+        state.leftComponent = step.leftComponent ?? shallowRef();
+        state.rightComponent = step.rightComponent ?? shallowRef();
         state.loading = false;
       }
     },
     nextStep() {
-      const step = methods.getNextStep();
-      if (step) methods.setStep(step.name);
+      methods.setStep(state.currentStep + 1);
     },
     previousStep() {
-      const step = methods.getPreviousStep();
-      if (step) methods.setStep(step.name);
+      methods.setStep(state.currentStep - 1);
     },
-    getPreviousStep() {
-      const currentIndex = computeds.currentStepIndex.value;
-      // Return the next object, if it exists; otherwise, return null
-      if (currentIndex !== -1) {
-        return steps[currentIndex - 1];
-      }
-      return false;
-    },
-
-    getNextStep() {
-      const currentIndex = computeds.currentStepIndex.value;
-      // Return the next object, if it exists; otherwise, return null
-      if (currentIndex !== -1 && currentIndex < steps.length - 1) {
-        return steps[currentIndex + 1];
-      }
-      return false;
-    },
-    getTenantConfigs(){
-      service.getModulesTenantConfig(true).then(async response => {
-        state.modules = response.client
-        state.themes = await service.getLayouts(response.baseTenantUrl)
-      })
-    },
-    async init() {
-      //restore last step
-      const step = (await methods.getCache('step')) || steps[0].name;
-      methods.setStep(step);
-      methods.getTenantConfigs()
+    getTenantConfigs() {
+      service.getModulesTenantConfig(true).then(async (response) => {
+        state.modules = response.client;
+        state.themes = await service.getLayouts(response.baseTenantUrl);
+      });
     },
   };
 
