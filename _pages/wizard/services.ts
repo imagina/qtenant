@@ -58,5 +58,15 @@ export default {
           resolve(response.data);
         }).catch(error => resolve([]));
     });
+  },
+  //Create new tenant
+  createTenant (data)
+  {
+    return new Promise((resolve, reject) =>
+    {
+      //request
+      baseService.create('apiRoutes.qtenant.organizations', data)
+        .then(response => resolve(response)).catch(error => reject(error));
+    });
   }
 };

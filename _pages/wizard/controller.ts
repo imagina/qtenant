@@ -170,7 +170,13 @@ export default function controller(props: any, emit: any) {
     },
     //create Tenant
     createTenant() {
-      console.warn(">>>> Create", state.form)
+      methods.nextStep()
+      service.createTenant(state.form).then(response => {
+        console.warn(">>>> Success", response)
+      }).catch(error => {
+        console.warn(">>> Error", error)
+        methods.previousStep()
+      })
     },
   };
 
