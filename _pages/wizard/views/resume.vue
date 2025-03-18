@@ -7,11 +7,14 @@
       </div>
       <!-- Description -->
       <div class="tw-text-md md:tw-text-lg tw-mb-16">
-        We are excited to create this for you! Below is an overview of your selections.
+        We are excited to create this for you! Below is an overview of your
+        selections.
       </div>
 
       <!-- Project Title Section -->
-      <div class="tw-flex tw-justify-between tw-items-center tw-mb-6 tw-bg-white tw-shadow-md tw-rounded-lg tw-p-4">
+      <div
+        class="tw-flex tw-justify-between tw-items-center tw-mb-6 tw-bg-white tw-shadow-md tw-rounded-lg tw-p-4"
+      >
         <div class="tw-text-left">
           <h2 class="tw-text-lg tw-font-semibold tw-text-gray-700">
             Project Name:
@@ -23,8 +26,10 @@
         <q-btn
           label="(pt)Edit"
           @click="setStep('projectName')"
-          no-caps class="q-ml-md"
-          rounded color="green"
+          no-caps
+          class="q-ml-md"
+          rounded
+          color="green"
           outline
         />
       </div>
@@ -40,13 +45,16 @@
             <q-btn
               label="(pt)Edit"
               @click="setStep('modules')"
-              no-caps class="q-ml-md"
-              rounded color="green"
+              no-caps
+              class="q-ml-md"
+              rounded
+              color="green"
               outline
             />
           </div>
 
           <div
+            v-if="selectedModules.length"
             class="tw-mt-4 tw-h-48 tw-overflow-y-auto tw-scrollbar-thin tw-scrollbar-thumb-gray-300"
           >
             <div
@@ -66,7 +74,10 @@
         </div>
 
         <!-- Selected Theme -->
-        <div class="tw-bg-white tw-shadow-md tw-rounded-lg tw-p-4 tw-relative">
+        <div
+          v-if="selectedTheme"
+          class="tw-bg-white tw-shadow-md tw-rounded-lg tw-p-4 tw-relative"
+        >
           <div class="tw-flex tw-justify-between tw-items-center">
             <h2 class="tw-text-lg tw-font-semibold tw-text-gray-700">
               Selected Theme
@@ -74,8 +85,10 @@
             <q-btn
               label="(pt)Edit"
               @click="setStep('themes')"
-              no-caps class="q-ml-md"
-              rounded color="green"
+              no-caps
+              class="q-ml-md"
+              rounded
+              color="green"
               outline
             />
           </div>
@@ -108,14 +121,11 @@ export default {
   computed: {
     selectedModules() {
       return this.modules.filter((module) =>
-        this.form.selectedModules.includes(module.name)
+        this.form.modules.includes(module.name)
       );
     },
     selectedTheme() {
-      return (
-        this.themes.find((theme) => theme.id === this.form.selectedTheme) ||
-        {}
-      );
+      return this.themes.find((theme) => theme.id === this.form.layoutId);
     },
   },
 };

@@ -25,13 +25,14 @@
             'tw-rounded-lg tw-p-4 tw-relative tw-cursor-pointer',
             'tw-transition-all tw-duration-300 tw-group',
             'md:hover:tw-scale-105 md:hover:tw-border-blue-500',
-            form.selectedModules.includes(module.name)
+            form.modules.includes(module.name)
               ? 'tw-border-2 tw-border-blue-500 tw-shadow-lg' // Selected item effect
               : 'tw-border-2 tw-border-white',
           ]"
         >
           <!-- Help Text - Positioned at the Top-Left -->
           <help-text
+            v-if="false"
             :title="module.client.title"
             :description="module.client.description"
             class="tw-absolute tw-top-2 tw-left-2 tw-z-10"
@@ -48,7 +49,7 @@
           </div>
           <q-icon
             :name="
-              form.selectedModules.includes(module.name)
+              form.modules.includes(module.name)
                 ? 'fa-light fa-check-circle'
                 : 'fa-light fa-circle'
             "
@@ -85,11 +86,11 @@ export default {
   },
   methods: {
     toggleSelect(module) {
-      let existIndex = this.form.selectedModules.findIndex(
+      let existIndex = this.form.modules.findIndex(
         (item) => item == module.name
       );
-      if (existIndex >= 0) this.form.selectedModules.splice(existIndex, 1);
-      else this.form.selectedModules.push(module.name);
+      if (existIndex >= 0) this.form.modules.splice(existIndex, 1);
+      else this.form.modules.push(module.name);
     },
   },
 };

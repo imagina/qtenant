@@ -30,20 +30,7 @@
     </q-scroll-area>
     <!-- Progress Action -->
     <div id="stepper" class="row justify-center full-width">
-      <!-- Welcome Actions-->
-      <div class="text-center tw-pb-6" v-if="!currentStep">
-        <q-btn
-          rounded
-          class="tw-animate-bounce"
-          no-caps
-          size="16px"
-          color="green"
-          @click="nextStep()"
-          :label="`${$tr('isite.cms.label.start')} 🚀`"
-        />
-      </div>
-      <!-- Navigation -->
-      <div v-else class="tw-w-full md:tw-w-1/2">
+      <div class="tw-w-full md:tw-w-1/2">
         <!--Linear Progress-->
         <q-linear-progress
           size="sm"
@@ -51,27 +38,22 @@
           track-color="cyan"
           :value="progress"
         />
-        <div class="row justify-between tw-p-4">
+        <!-- Navigation -->
+        <div
+          class="row tw-p-4"
+          :class="{
+            'justify-between': actions.length > 1,
+            'justify-center': actions.length === 1,
+          }"
+        >
           <q-btn
+            v-for="(act, key) in actions"
+            :key="key"
+            @click="act.method"
             rounded
             no-caps
-            :disabled="false"
-            unelevated
-            outline
             color="green"
-            icon="fa-light fa-arrow-left"
-            @click="previousStep()"
-            :label="$tr('isite.cms.label.previous')"
-          />
-          <q-btn
-            rounded
-            no-caps
-            :disabled="false"
-            icon-right="fa-light fa-arrow-right"
-            @click="nextStep()"
-            unelevated
-            color="green"
-            :label="$tr('isite.cms.label.continue')"
+            v-bind="act.props"
           />
         </div>
       </div>
