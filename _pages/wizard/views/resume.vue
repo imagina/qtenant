@@ -112,7 +112,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
+import { inject } from 'vue';
 
 export default {
   setup() {

@@ -9,7 +9,7 @@ import {
 } from 'vue';
 import service from './services';
 import { useStorage } from '@vueuse/core';
-import { i18n } from 'src/plugins/utils';
+import { i18n, helper } from 'src/plugins/utils';
 
 export default function controller(props: any, emit: any) {
   const proxy = getCurrentInstance()!.appContext.config.globalProperties;
@@ -68,7 +68,12 @@ export default function controller(props: any, emit: any) {
     rightComponent: shallowRef(),
     modules: [],
     themes: [],
-    form: useStorage('tenant-form', { title: null, modules: [], layoutId: null })
+    form: useStorage('tenant-form', {
+      title: null,
+      modules: [],
+      layoutId: null,
+    }),
+    redirectUrl: useStorage('tenant-redirectUrl', null),
   });
 
   // Computed
@@ -108,6 +113,13 @@ export default function controller(props: any, emit: any) {
             label: `${i18n.tr('isite.cms.label.create')} 🚀`,
           },
         },
+        goToTenant: {
+          method: methods.goToTenant,
+          props: {
+            class: 'tw-animate-bounce',
+            label: `${i18n.tr('itenant.cms.label.goToTenant')} 🚀`,
+          },
+        },
       };
 
       switch (state.currentStep.name) {
@@ -127,6 +139,8 @@ export default function controller(props: any, emit: any) {
           return [actions.previous, nextTheme];
         case 'resume':
           return [actions.create];
+        case 'creation':
+          return state.redirectUrl ? [actions.goToTenant] : [];
         default:
           return [];
       }
@@ -141,7 +155,7 @@ export default function controller(props: any, emit: any) {
     },
     //Set the step by index
     setStep(name) {
-      const stepIndex = steps.findIndex(item => item.name == name);
+      const stepIndex = steps.findIndex((item) => item.name == name);
       if (stepIndex >= 0) {
         const step = steps[stepIndex];
         state.currentStep = { index: stepIndex, name: step.name };
@@ -170,14 +184,29 @@ export default function controller(props: any, emit: any) {
     },
     //create Tenant
     createTenant() {
-      methods.nextStep()
-      service.createTenant(state.form).then(response => {
-        console.warn(">>>> Success", response)
-      }).catch(error => {
-        console.warn(">>> Error", error)
-        methods.previousStep()
-      })
+      methods.nextStep();
+      service
+        .createTenant({
+          ...state.form,
+          [proxy.$store.state.qsiteApp.defaultLocale]: {
+            title: state.form.title,
+          },
+        })
+        .then((response) => {
+          state.redirectUrl = response.data.redirectUrl;
+        })
+        .catch((error) => {
+          methods.previousStep();
+        });
     },
+    //Redirect to url and clear wizard data
+    goToTenant(){
+      let redirectTo = state.redirectUrl
+      state.currentStep = null
+      state.form = null
+      state.redirectUrl = null
+      helper.openExternalURL(redirectTo, false)
+    }
   };
 
   // Mounted
