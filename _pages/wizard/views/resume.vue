@@ -17,7 +17,7 @@
       >
         <div class="tw-text-left">
           <h2 class="tw-text-lg tw-font-semibold tw-text-gray-700">
-            Project Name:
+            Name
           </h2>
           <p class="tw-text-gray-600 tw-text-lg">
             {{ form.title || 'No title selected' }}
@@ -26,6 +26,29 @@
         <q-btn
           label="(pt)Edit"
           @click="setStep('projectName')"
+          no-caps
+          class="q-ml-md"
+          rounded
+          color="green"
+          outline
+        />
+      </div>
+
+      <!-- Project Title Section -->
+      <div
+        class="tw-flex tw-justify-between tw-items-center tw-mb-6 tw-bg-white tw-shadow-md tw-rounded-lg tw-p-4"
+      >
+        <div class="tw-text-left">
+          <h2 class="tw-text-lg tw-font-semibold tw-text-gray-700">
+            Category
+          </h2>
+          <p class="tw-text-gray-600 tw-text-lg">
+            {{selectedCategory.title}}
+          </p>
+        </div>
+        <q-btn
+          label="(pt)Edit"
+          @click="setStep('projectDescription')"
           no-caps
           class="q-ml-md"
           rounded
@@ -119,6 +142,9 @@ export default {
     return inject('controller'); // Inject the controller
   },
   computed: {
+    selectedCategory() {
+      return this.categories.find((catergory) => catergory.id == this.form.categoryId);
+    },
     selectedModules() {
       return this.modules.filter((module) =>
         this.form.modules.includes(module.name)

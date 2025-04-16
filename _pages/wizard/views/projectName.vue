@@ -38,7 +38,7 @@ export default {
           type: 'input',
           props: {
             icon: 'fa-light fa-registered',
-            label: this.$tr('isite.cms.form.name'),
+            label: this.$tr('isite.cms.form.name')+'*',
             color: 'primary',
             rounded: true,
             dense: false,

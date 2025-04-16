@@ -33,6 +33,13 @@ export default function controller(props: any, emit: any) {
       ),
     },
     {
+      name: 'projectDescription',
+      leftComponent: defineAsyncComponent(
+        () =>
+          import('modules/qtenant/_pages/wizard/views/projectDescription.vue')
+      ),
+    },
+    {
       name: 'modules',
       leftComponent: defineAsyncComponent(
         () => import('modules/qtenant/_pages/wizard/views/modules.vue')
@@ -67,9 +74,12 @@ export default function controller(props: any, emit: any) {
     leftComponent: shallowRef(),
     rightComponent: shallowRef(),
     modules: [],
+    categories: [],
     themes: [],
     form: useStorage('tenant-form', {
       title: null,
+      categoryId: null,
+      businessDescription: null,
       modules: [],
       layoutId: null,
     }),
@@ -129,6 +139,10 @@ export default function controller(props: any, emit: any) {
           let nextProjectName = actions.next;
           nextProjectName.props.disable = (state.form.title ?? '').length < 3;
           return [actions.previous, nextProjectName];
+        case 'projectDescription':
+          let nextProjectDescription = actions.next;
+          nextProjectDescription.props.disable = !state.form.categoryId;
+          return [actions.previous, nextProjectDescription];
         case 'modules':
           let nextModules = actions.next;
           nextModules.props.disable = !state.form.modules.length;
@@ -172,15 +186,15 @@ export default function controller(props: any, emit: any) {
       methods.setStep(steps[state.currentStep.index - 1].name);
     },
     //Get the needed tenant configs
-    getTenantConfigs(refresh = false) {
-      service.getModulesTenantConfig(refresh).then(async (response) => {
-        state.modules = response.client;
-        state.themes = await service.getLayouts(
-          response.baseTenantUrl,
-          refresh
-        );
-        state.dataLoaded = true;
-      });
+    async getTenantConfigs(refresh = false) {
+      const response = await Promise.all([
+        service.getModulesTenantConfig(refresh),
+        service.getCategories(refresh),
+      ]);
+      state.modules = response[0].client;
+      state.categories = response[1];
+      state.themes = await service.getLayouts(response[0].baseTenantUrl, refresh);
+      state.dataLoaded = true;
     },
     //create Tenant
     createTenant() {
@@ -200,13 +214,13 @@ export default function controller(props: any, emit: any) {
         });
     },
     //Redirect to url and clear wizard data
-    goToTenant(){
-      let redirectTo = state.redirectUrl
-      state.currentStep = null
-      state.form = null
-      state.redirectUrl = null
-      helper.openExternalURL(redirectTo, false)
-    }
+    goToTenant() {
+      let redirectTo = state.redirectUrl;
+      state.currentStep = null;
+      state.form = null;
+      state.redirectUrl = null;
+      helper.openExternalURL(redirectTo, false);
+    },
   };
 
   // Mounted
