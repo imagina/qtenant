@@ -7,4 +7,5 @@ export default {
   urlBase: urlBase,
   version: moduleVersion,
   organizations: `${urlBase}/organizations`,
+  categories: `${urlBase}/categories`,
 }
