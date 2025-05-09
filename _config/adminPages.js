@@ -13,7 +13,7 @@ export default {
   },
   categories: {
     permission: 'itenant.categories.manage',
-    activated: true,
+    activated: false,
     authenticated: true,
     path: '/tenant/categories/index',
     name: 'qtenant.admin.categories',
