@@ -121,7 +121,7 @@ export default {
             props: {
               label: this.$tr('isite.cms.form.firstImage'),
               zone: 'mainimage',
-              entity: "Modules\\Iblog\\Entities\\Category",
+              entity: "Modules\\Iblog\\Models\\Category",
               entityId: null
             }
           }

@@ -57,7 +57,7 @@ export default {
         refresh,
         cacheKey: 'tenantLayouts',
         params: {
-          filter: { entityType: 'Modules\\Page\\Entities\\Page', type: 'home' },
+          filter: { entityType: 'Modules\\Ipage\\Models\\Page', type: 'home' },
           include: 'files',
         },
       };
